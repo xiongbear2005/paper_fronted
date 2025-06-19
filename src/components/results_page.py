@@ -1109,9 +1109,28 @@ def _render_data_analysis_card(analysis_result: dict):
         modules.append(modules[0])
         norm_scores.append(norm_scores[0])
 
+        # 设置主色调为蓝色（与整体主题保持一致）
+        primary_color_rgba = 'rgba(67,97,238,1)'        # 纯色线条
+        primary_fill_rgba = 'rgba(67,97,238,0.2)'       # 20% 不透明度填充
+
         fig = go.Figure()
-        fig.add_trace(go.Scatterpolar(r=norm_scores, theta=modules, fill='toself', name='得分(10分制)'))
-        fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0,10])),showlegend=False,margin=dict(l=20,r=20,t=20,b=20),height=350)
+        fig.add_trace(
+            go.Scatterpolar(
+                r=norm_scores,
+                theta=modules,
+                fill='toself',
+                name='得分(10分制)',
+                line=dict(color=primary_color_rgba, width=2),
+                fillcolor=primary_fill_rgba,
+                marker=dict(color=primary_color_rgba)
+            )
+        )
+        fig.update_layout(
+            polar=dict(radialaxis=dict(visible=True, range=[0, 10])),
+            showlegend=False,
+            margin=dict(l=20, r=20, t=20, b=20),
+            height=350
+        )
 
         fig_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         fig_html = f"""
